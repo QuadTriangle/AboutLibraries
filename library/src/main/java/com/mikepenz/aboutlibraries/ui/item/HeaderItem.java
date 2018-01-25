@@ -1,6 +1,7 @@
 package com.mikepenz.aboutlibraries.ui.item;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -91,6 +92,22 @@ public class HeaderItem extends AbstractItem<HeaderItem, HeaderItem.ViewHolder> 
 
         //ctx
         final Context ctx = holder.itemView.getContext();
+        
+        // https://stackoverflow.com/a/21188768
+        final Html.ImageGetter imageGetter = new Html.ImageGetter() {
+            @Override
+            public Drawable getDrawable(final String source) {
+                Drawable d = null;
+                try {
+                    int id = ctx.getResources().getIdentifier(source, "drawable", ctx.getPackageName());
+                    d = ctx.getResources().getDrawable(id);
+                    d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+                } catch (Resources.NotFoundException e) {
+                    Log.e("AboutLibraries", "Image \"" + source + "\" was not found in drawable");
+                }
+                return d;
+            }
+        };
 
         //Set the Icon or hide it
         if (libsBuilder.aboutShowIcon != null && libsBuilder.aboutShowIcon && aboutIcon != null) {
@@ -144,7 +161,7 @@ public class HeaderItem extends AbstractItem<HeaderItem, HeaderItem.ViewHolder> 
                     if (!consumed && !TextUtils.isEmpty(libsBuilder.aboutAppSpecial1Description)) {
                         try {
                             AlertDialog alert = new AlertDialog.Builder(ctx)
-                                .setMessage(Html.fromHtml(libsBuilder.aboutAppSpecial1Description))
+                                .setMessage(Html.fromHtml(libsBuilder.aboutAppSpecial1Description, imageGetter, null))
                                 .create();
                             alert.show();
                             TextView alertText = (TextView) alert.findViewById(android.R.id.message);
@@ -173,7 +190,7 @@ public class HeaderItem extends AbstractItem<HeaderItem, HeaderItem.ViewHolder> 
                     if (!consumed && !TextUtils.isEmpty(libsBuilder.aboutAppSpecial2Description)) {
                         try {
                             AlertDialog alert = new AlertDialog.Builder(ctx)
-                                .setMessage(Html.fromHtml(libsBuilder.aboutAppSpecial2Description))
+                                .setMessage(Html.fromHtml(libsBuilder.aboutAppSpecial2Description, imageGetter, null))
                                 .create();
                             alert.show();
                             TextView alertText = (TextView) alert.findViewById(android.R.id.message);
@@ -202,7 +219,7 @@ public class HeaderItem extends AbstractItem<HeaderItem, HeaderItem.ViewHolder> 
                     if (!consumed && !TextUtils.isEmpty(libsBuilder.aboutAppSpecial3Description)) {
                         try {
                             AlertDialog alert = new AlertDialog.Builder(ctx)
-                                .setMessage(Html.fromHtml(libsBuilder.aboutAppSpecial3Description))
+                                .setMessage(Html.fromHtml(libsBuilder.aboutAppSpecial3Description, imageGetter, null))
                                 .create();
                             alert.show();
                             TextView alertText = (TextView) alert.findViewById(android.R.id.message);
@@ -237,7 +254,7 @@ public class HeaderItem extends AbstractItem<HeaderItem, HeaderItem.ViewHolder> 
 
         //Set the description or hide it
         if (!TextUtils.isEmpty(libsBuilder.aboutDescription)) {
-            holder.aboutAppDescription.setText(Html.fromHtml(libsBuilder.aboutDescription));
+            holder.aboutAppDescription.setText(Html.fromHtml(libsBuilder.aboutDescription, imageGetter, null));
             new Iconics.IconicsBuilder().ctx(ctx).on(holder.aboutAppDescription).build();
             holder.aboutAppDescription.setMovementMethod(MovementCheck.getInstance());
         } else {
