@@ -100,7 +100,7 @@ public class HeaderItem extends AbstractItem<HeaderItem, HeaderItem.ViewHolder> 
             public Drawable getDrawable(final String source) {
                 Drawable d = null;
                 try {
-                    int id = ctx.getResources().getIdentifier(source, "drawable", ctx.getPackageName());
+                    int id = ctx.getResources().getIdentifier(source.replace("/", ""), "drawable", ctx.getPackageName());
                     d = ctx.getResources().getDrawable(id);
                     d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
                 } catch (Resources.NotFoundException e) {
