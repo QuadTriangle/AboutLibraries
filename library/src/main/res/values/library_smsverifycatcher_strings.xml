@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-	<string name="define_int_smsverifycatcher">year;owner</string>
+	<string name="define_int_smsverifycatcher">2017;stfalcon.com</string>
 	<!-- Author section -->
 	<string name="library_smsverifycatcher_author">Stfalcon LLC</string>
 	<string name="library_smsverifycatcher_authorWebsite">http://stfalcon.com/</string>
